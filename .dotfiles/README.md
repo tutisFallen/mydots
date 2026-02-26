@@ -65,3 +65,30 @@ Para usar também na **Nova Aba**, instale a extensão **New Tab Override**.
 
 - Não versionar segredos (tokens, chaves privadas, cookies).
 - Se quiser, depois posso migrar para modelo com **GNU Stow** (symlinks automáticos por pasta).
+
+
+---
+
+## Instalação de pacotes por distro
+
+Scripts prontos em `~/.dotfiles/scripts`:
+
+- `install-all.sh` (auto-detect distro)
+- `install-arch.sh`
+- `install-fedora.sh`
+- `install-ubuntu.sh`
+
+Uso:
+
+```bash
+bash ~/.dotfiles/scripts/install-all.sh
+```
+
+### Notas importantes
+
+- Fedora: script tenta habilitar COPR `avengemedia/dms` para `dms` e `cliphist`.
+- Ubuntu/Fedora: se `hyprland`/`yazi` não estiverem nos repositórios atuais, o script aponta para instalação oficial:
+  - Hyprland: https://wiki.hypr.land/Getting-Started/Installation/
+  - Yazi: https://yazi-rs.github.io/docs/installation/
+- Fastfetch (Ubuntu fallback): https://github.com/fastfetch-cli/fastfetch
+- Swappy (Ubuntu referência): https://launchpad.net/ubuntu/+source/swappy
