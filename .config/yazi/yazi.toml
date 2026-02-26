@@ -1,0 +1,42 @@
+# Yazi config
+
+[mgr]
+show_hidden = false
+sort_by = "natural"
+sort_sensitive = false
+sort_reverse = false
+sort_dir_first = true
+linemode = "none"
+show_symlink = true
+scrolloff = 6
+mouse_events = [ "click", "scroll", "touch", "move", "drag" ]
+ratio = [ 1, 3, 4 ]
+
+[preview]
+wrap = "yes"
+tab_size = 2
+max_width = 1800
+max_height = 1800
+image_delay = 0
+image_filter = "triangle"
+image_quality = 85
+
+[opener]
+edit = [
+  { run = "sh -lc 'if command -v helix >/dev/null 2>&1; then helix \"$@\"; elif command -v hx >/dev/null 2>&1; then hx \"$@\"; elif [ -n \"$EDITOR\" ]; then \"$EDITOR\" \"$@\"; else nano \"$@\"; fi' sh \"$@\"", block = true, for = "unix" },
+]
+open = [
+  { run = 'xdg-open "$1"', orphan = true, desc = "Open" },
+]
+reveal = [
+  { run = 'xdg-open "$(dirname "$1")"', orphan = true, desc = "Reveal" },
+]
+
+[open]
+prepend_rules = [
+  { name = "*.md", use = [ "edit", "open" ] },
+  { name = "*.txt", use = [ "edit", "open" ] },
+  { name = "*.toml", use = [ "edit", "open" ] },
+  { name = "*.json", use = [ "edit", "open" ] },
+  { mime = "text/*", use = [ "edit", "open" ] },
+]

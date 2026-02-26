@@ -1,0 +1,26 @@
+# Keymaps focused on reliability (hjkl + arrows + quick edit)
+
+[mgr]
+prepend_keymap = [
+  { on = [ "<Enter>" ], run = "enter", desc = "Entrar na pasta" },
+  { on = [ "l" ], run = "enter", desc = "Entrar na pasta" },
+  { on = [ "h" ], run = "leave", desc = "Voltar para pasta pai" },
+
+  { on = [ "<Left>" ],  run = "leave", desc = "Voltar" },
+  { on = [ "<Right>" ], run = "enter", desc = "Entrar" },
+  { on = [ "<Up>" ],    run = "arrow -1", desc = "Up" },
+  { on = [ "<Down>" ],  run = "arrow 1",  desc = "Down" },
+
+  { on = [ "o" ], run = "open", desc = "Abrir arquivo" },
+  { on = [ "e" ], run = "open --interactive", desc = "Open with..." },
+  { on = [ "E" ], run = "open --interactive", desc = "Open with..." },
+
+  { on = [ "gh" ], run = "cd ~", desc = "Home" },
+  { on = [ "gd" ], run = "cd ~/Downloads", desc = "Downloads" },
+  { on = [ "gp" ], run = "cd ~/Pictures", desc = "Pictures" },
+
+  { on = [ "." ], run = "hidden toggle", desc = "Toggle hidden" },
+  { on = [ "?" ], run = "help", desc = "Keymap help" },
+  { on = [ "<F1>" ], run = "help", desc = "Keymap help" },
+  { on = [ "<C-l>" ], run = "refresh", desc = "Refresh" },
+]
