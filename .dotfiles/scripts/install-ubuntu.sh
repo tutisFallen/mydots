@@ -1,42 +1,37 @@
 #!/usr/bin/env bash
 set -euo pipefail
 DIR="$(cd "$(dirname "$0")" && pwd)"
-# shellcheck source=/dev/null
-source "$DIR/common.sh"
-
-PKGS_FILE="$HOME/.dotfiles/packages/ubuntu.txt"
-[[ -f "$PKGS_FILE" ]] || { err "Missing $PKGS_FILE"; exit 1; }
+source "$DIR/common.sh" "$@"
 
 log "Updating apt metadata..."
 sudo apt-get update -y
 
-log "Installing Ubuntu baseline packages..."
-TO_INSTALL=()
-while read -r p; do
-  [[ -z "$p" || "$p" =~ ^# ]] && continue
-  if apt-cache show "$p" >/dev/null 2>&1; then
-    TO_INSTALL+=("$p")
-  else
-    warn "Not in apt now: $p"
-  fi
-done < "$PKGS_FILE"
+install_group() {
+  local name="$1"; shift
+  local pkgs=("$@")
+  log "Installing group: $name"
+  for p in "${pkgs[@]}"; do
+    install_pkg_if_available "apt-cache show" "sudo apt-get install -y" "$p"
+  done
+}
 
-if ((${#TO_INSTALL[@]})); then
-  sudo apt-get install -y "${TO_INSTALL[@]}"
+BASE=(xdg-desktop-portal xdg-desktop-portal-gtk pipewire wireplumber wl-clipboard libnotify-bin)
+HYPR=(hyprland xdg-desktop-portal-hyprland kitty foot grim slurp swappy)
+YAZI=(yazi jq fd-find ripgrep bat fzf zoxide p7zip-full ffmpeg)
+DESKTOP=(playerctl brightnessctl pavucontrol policykit-1 network-manager-gnome bluez blueman firefox nautilus thunar fastfetch)
+
+ask_yes_no "Install BASE group?" Y && install_group "base" "${BASE[@]}"
+ask_yes_no "Install HYPR group?" Y && install_group "hypr" "${HYPR[@]}"
+ask_yes_no "Install YAZI group?" Y && install_group "yazi" "${YAZI[@]}"
+ask_yes_no "Install DESKTOP extras group?" N && install_group "desktop" "${DESKTOP[@]}"
+
+if ask_yes_no "Show/install DMS note? (Ubuntu uses upstream repos)" Y; then
+  warn "DMS docs: https://danklinux.com/docs/dankmaterialshell/installation/"
 fi
 
-# focused fallbacks based on your links
-if ! have fastfetch; then
-  warn "fastfetch missing. Use official repo/build: https://github.com/fastfetch-cli/fastfetch"
-fi
-if ! have swappy; then
-  warn "swappy missing. Check Launchpad source/version: https://launchpad.net/ubuntu/+source/swappy"
-fi
-if ! have yazi; then
-  warn "yazi missing. Install from official docs: https://yazi-rs.github.io/docs/installation/"
-fi
-if ! have hyprland; then
-  warn "hyprland missing. Install per official docs: https://wiki.hypr.land/Getting-Started/Installation/"
-fi
+have fastfetch || warn "Fastfetch fallback: https://github.com/fastfetch-cli/fastfetch"
+have swappy || warn "Swappy reference: https://launchpad.net/ubuntu/+source/swappy"
+have yazi || warn "Yazi fallback: https://yazi-rs.github.io/docs/installation/"
+have hyprland || warn "Hyprland fallback: https://wiki.hypr.land/Getting-Started/Installation/"
 
 log "Ubuntu install finished."

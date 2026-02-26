@@ -78,10 +78,16 @@ Scripts prontos em `~/.dotfiles/scripts`:
 - `install-fedora.sh`
 - `install-ubuntu.sh`
 
-Uso:
+Uso (interativo por módulos):
 
 ```bash
 bash ~/.dotfiles/scripts/install-all.sh
+```
+
+Uso não-interativo (instala tudo com default):
+
+```bash
+bash ~/.dotfiles/scripts/install-all.sh --yes
 ```
 
 ### Notas importantes

@@ -1,38 +1,46 @@
 #!/usr/bin/env bash
 set -euo pipefail
 DIR="$(cd "$(dirname "$0")" && pwd)"
-# shellcheck source=/dev/null
-source "$DIR/common.sh"
+source "$DIR/common.sh" "$@"
 
-PKGS_FILE="$HOME/.dotfiles/packages/fedora.txt"
-[[ -f "$PKGS_FILE" ]] || { err "Missing $PKGS_FILE"; exit 1; }
-
-log "Refreshing metadata..."
+log "Refreshing dnf metadata..."
 sudo dnf -y makecache
 
-log "Installing Fedora baseline packages..."
-# map package names/fallbacks
-TMP="$(mktemp)"
-while read -r p; do
-  [[ -z "$p" || "$p" =~ ^# ]] && continue
-  case "$p" in
-    ffmpeg) echo "ffmpeg-free" >> "$TMP" ;;
-    *) echo "$p" >> "$TMP" ;;
+map_pkg() {
+  case "$1" in
+    ffmpeg) echo "ffmpeg-free" ;;
+    *) echo "$1" ;;
   esac
-done < "$PKGS_FILE"
+}
 
-sudo dnf install -y $(tr '\n' ' ' < "$TMP") || warn "Some packages unavailable in current repos"
-rm -f "$TMP"
+install_group() {
+  local name="$1"; shift
+  local pkgs=("$@")
+  log "Installing group: $name"
+  for p in "${pkgs[@]}"; do
+    p="$(map_pkg "$p")"
+    install_pkg_if_available "dnf info" "sudo dnf install -y" "$p"
+  done
+}
 
-log "Enabling DMS COPR (stable) and installing DMS stack..."
-sudo dnf -y copr enable avengemedia/dms || warn "Could not enable COPR avengemedia/dms"
-sudo dnf install -y dms cliphist || warn "dms/cliphist not installed from COPR"
+BASE=(xdg-desktop-portal xdg-desktop-portal-gtk xdg-desktop-portal-hyprland pipewire wireplumber wl-clipboard libnotify)
+HYPR=(hyprland kitty foot grim slurp swappy)
+YAZI=(yazi jq fd-find ripgrep bat fzf zoxide p7zip ffmpeg)
+DESKTOP=(playerctl brightnessctl pavucontrol NetworkManager network-manager-applet bluez bluez-tools blueman firefox nautilus thunar fastfetch)
 
-if ! have yazi; then
-  warn "yazi not found in repos. Install via official binary/cargo: https://yazi-rs.github.io/docs/installation/"
+ask_yes_no "Install BASE group?" Y && install_group "base" "${BASE[@]}"
+ask_yes_no "Install HYPR group?" Y && install_group "hypr" "${HYPR[@]}"
+ask_yes_no "Install YAZI group?" Y && install_group "yazi" "${YAZI[@]}"
+ask_yes_no "Install DESKTOP extras group?" N && install_group "desktop" "${DESKTOP[@]}"
+
+if ask_yes_no "Install DMS via COPR (avengemedia/dms)?" Y; then
+  sudo dnf -y copr enable avengemedia/dms || warn "Could not enable COPR"
+  for p in dms cliphist; do
+    install_pkg_if_available "dnf info" "sudo dnf install -y" "$p"
+  done
 fi
-if ! have hyprland; then
-  warn "hyprland not found in current repos. Follow official: https://wiki.hypr.land/Getting-Started/Installation/"
-fi
+
+have yazi || warn "Yazi fallback: https://yazi-rs.github.io/docs/installation/"
+have hyprland || warn "Hyprland fallback: https://wiki.hypr.land/Getting-Started/Installation/"
 
 log "Fedora install finished."

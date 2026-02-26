@@ -2,7 +2,7 @@
 set -euo pipefail
 DIR="$(cd "$(dirname "$0")" && pwd)"
 # shellcheck source=/dev/null
-source "$DIR/common.sh"
+source "$DIR/common.sh" "$@"
 
 OS="$(detect_os)"
 log "Detected OS: $OS"
