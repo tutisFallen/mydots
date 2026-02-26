@@ -1,0 +1,54 @@
+# Ubuntu mapping (apt)
+# NOTE: some packages may require Universe/Multiverse or newer Ubuntu.
+
+# Core Wayland/Hypr
+hyprland
+xdg-desktop-portal
+xdg-desktop-portal-hyprland
+xdg-desktop-portal-gtk
+
+# Terminal + file manager
+kitty
+foot
+yazi
+
+# Yazi helpers
+ffmpeg
+p7zip-full
+jq
+fd-find
+ripgrep
+bat
+fzf
+zoxide
+
+# Screenshot / OCR / clipboard
+grim
+slurp
+swappy
+tesseract-ocr
+wl-clipboard
+libnotify-bin
+
+# Session / media controls
+pipewire
+wireplumber
+playerctl
+brightnessctl
+pavucontrol
+policykit-1
+network-manager-gnome
+bluez
+blueman
+
+# Extras
+fastfetch
+firefox
+nautilus
+thunar
+
+# Usually manual / not official package name
+# - dms-shell-git
+# - grimblast-git
+# - cliphist (often build from source)
+# - DankMaterialShell (manual from upstream)

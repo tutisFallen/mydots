@@ -1,0 +1,56 @@
+# Fedora mapping (dnf)
+# NOTE: names can vary by Fedora version/spins.
+
+# Core Wayland/Hypr
+hyprland
+xdg-desktop-portal
+xdg-desktop-portal-hyprland
+xdg-desktop-portal-gtk
+
+# Terminal + file manager
+kitty
+foot
+yazi
+
+# Yazi helpers
+ffmpeg
+p7zip
+jq
+fd-find
+ripgrep
+bat
+fzf
+zoxide
+
+# Screenshot / OCR / clipboard
+grim
+slurp
+swappy
+tesseract
+wl-clipboard
+cliphist
+libnotify
+
+# Session / media controls
+pipewire
+wireplumber
+playerctl
+brightnessctl
+pavucontrol
+polkit
+NetworkManager
+network-manager-applet
+bluez
+bluez-tools
+blueman
+
+# Extras
+fastfetch
+firefox
+nautilus
+thunar
+
+# Not in default repos (manual install needed)
+# - dms-shell-git
+# - grimblast-git (use grim/slurp directly or install script manually)
+# - DankMaterialShell (manual from upstream)

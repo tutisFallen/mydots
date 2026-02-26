@@ -1,0 +1,52 @@
+# Core (Arch)
+hyprland
+xdg-desktop-portal
+xdg-desktop-portal-hyprland
+xdg-desktop-portal-gtk
+
+# DMS / shell layer
+dms-shell-git
+
+# Terminal + file manager
+kitty
+foot
+yazi
+
+# Yazi helpers
+ffmpeg
+7zip
+p7zip
+jq
+fd
+ripgrep
+bat
+fzf
+zoxide
+
+# Screenshot / OCR / clipboard
+grim
+slurp
+grimblast-git
+swappy
+tesseract
+wl-clipboard
+cliphist
+libnotify
+
+# Session / media controls
+pipewire
+wireplumber
+playerctl
+brightnessctl
+pavucontrol
+polkit-kde-agent
+network-manager-applet
+blueman
+bluez
+bluez-utils
+
+# Extras you currently use
+fastfetch
+firefox
+nautilus
+thunar
